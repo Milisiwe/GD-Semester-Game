@@ -23,13 +23,19 @@ public class Pause : MonoBehaviour
                 Panel.SetActive(false);
                 Time.timeScale = 1;
             }
-            
+
             else
             {
                 Time.timeScale = 0;
                 Panel.SetActive(true);
             }
         }
+    }
+
+    public void PausePlay()
+    {
+        Panel.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void UnpausePlayGame()

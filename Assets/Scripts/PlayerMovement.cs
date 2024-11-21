@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 lastDirection;
     private Vector3 moveVector;
 
+    AudioSource audioManager;
+    private bool isMoving = false;
+
     private void Awake()
     {
         player = GetComponent<NavMeshAgent>();
@@ -38,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
         movement.Enable();
         actionMap.Enable();
         inputActions.Enable();
+
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
     }
 
     private void HandleMovementAction(InputAction.CallbackContext context)
@@ -57,9 +62,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         lastDirection = moveVector;
-        TargetDirection = Vector3.Lerp(TargetDirection, moveVector, Mathf.Clamp01(LerpTime * targetLerpSpeed *(1 - Smooth)));
-
+        TargetDirection = Vector3.Lerp(TargetDirection, moveVector, Mathf.Clamp01(LerpTime * targetLerpSpeed * (1 - Smooth)));
+        Debug.Log(TargetDirection);
         player.Move(TargetDirection * player.speed * Time.deltaTime);
+        isMoving = true;
+        if (isMoving)
+        {
+            audioManager.Play();
+        }
+        
+
+        
         Vector3 lookDirection = moveVector;
         if (lookDirection != Vector3.zero)
         {
@@ -72,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        camera.transform.position = transform.position + Vector3.up * 10;
+        camera.transform.position = transform.position + Vector3.up * 40 + Vector3.back * 30;
+
     }
 }

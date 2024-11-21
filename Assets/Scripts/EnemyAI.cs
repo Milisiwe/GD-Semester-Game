@@ -43,10 +43,13 @@ public class EnemyAI : MonoBehaviour
     public bool isAttacking = false;
     public bool isChasingPlayer = false;
 
+    //AudioManager audioManager;
+
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
         enemy = GetComponent<NavMeshAgent>();
+        //audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -77,6 +80,7 @@ public class EnemyAI : MonoBehaviour
             enemyAnim.SetBool("Idle", false);
             enemyAnim.SetBool("Walking", true);
             isChasingPlayer = true;
+            //audioManager.PlaySFX(audioManager.enemyWalk);
         }
         else
         {
@@ -92,14 +96,16 @@ public class EnemyAI : MonoBehaviour
             attackSword.SetActive(true);
             shieldSword.SetActive(false);
             isAttacking = true;
+            //audioManager.PlaySFX(audioManager.enemyAttack);
         }
         else
         {
             enemyAnim.SetBool("Attacking", false);
             enemyAnim.SetBool("Walking", true);
             isAttacking = false;
+
         }
-            
+
     }
 
     private void SearchPatrol()
