@@ -1493,7 +1493,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ca4d83501e8a1b34c91c7ac6a89e7f4f, type: 2}
     - target: {fileID: 919132149155446097, guid: 6be299c3263d52a4fa0f420891722f2a, type: 3}
       propertyPath: m_Name
-      value: 2556083_Humaira Evans_WSOA2026_ Assignment2
+      value: Chest
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
