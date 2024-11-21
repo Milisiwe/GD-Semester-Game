@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         actionMap.Enable();
         inputActions.Enable();
 
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
+        audioManager = GameObject.FindGameObjectWithTag("Cat").GetComponent<AudioSource>();
     }
 
     private void HandleMovementAction(InputAction.CallbackContext context)
@@ -55,31 +55,44 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveVector.Normalize();
-        if (moveVector != lastDirection)
-        {
-            LerpTime = 0;
-        }
+            moveVector.Normalize();
 
-        lastDirection = moveVector;
-        TargetDirection = Vector3.Lerp(TargetDirection, moveVector, Mathf.Clamp01(LerpTime * targetLerpSpeed * (1 - Smooth)));
-        Debug.Log(TargetDirection);
-        player.Move(TargetDirection * player.speed * Time.deltaTime);
-        isMoving = true;
-        if (isMoving)
-        {
-            audioManager.Play();
-        }
+            // Stop moving if no movement
+            if (moveVector == Vector3.zero)
+            {
+                isMoving = false;
+                if (audioManager.isPlaying)
+                {
+                    audioManager.Stop();  // Stop the audio when not moving
+                }
+            }
+            else
+            {
+                if (!isMoving)
+                {
+                    isMoving = true;
+                    audioManager.Play(); // Play the audio only once when starting to move
+                }
+            }
+
+            if (moveVector != lastDirection)
+            {
+                LerpTime = 0;
+            }
+
+            lastDirection = moveVector;
+            TargetDirection = Vector3.Lerp(TargetDirection, moveVector, Mathf.Clamp01(LerpTime * targetLerpSpeed * (1 - Smooth)));
+            player.Move(TargetDirection * player.speed * Time.deltaTime);
+
+            Vector3 lookDirection = moveVector;
+            if (lookDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookDirection), Mathf.Clamp01(LerpTime * targetLerpSpeed * (1 - Smooth)));
+            }
+
+            LerpTime += Time.deltaTime;
         
 
-        
-        Vector3 lookDirection = moveVector;
-        if (lookDirection != Vector3.zero)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookDirection), Mathf.Clamp01(LerpTime * targetLerpSpeed * (1 - Smooth)));
-        }
-
-        LerpTime += Time.deltaTime;
 
     }
 
